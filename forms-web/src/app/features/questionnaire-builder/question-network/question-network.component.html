@@ -1,0 +1,114 @@
+<div class="question-network-container">
+  <h3 class="a-text--subtitle">Question Dependency Network</h3>
+
+  <!-- Debug info -->
+  <!--<div class="debug-info" style="background-color: #f0f0f0; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+    <p><strong>Debug Info:</strong></p>
+    <p>Total Questions: {{ networkNodes.length }}</p>
+    <p>Root Questions: {{ rootNodes.length }}</p>
+    <p>Connection Lines: {{ getConnectionCount() }}</p>
+  </div>-->
+
+  <div *ngIf="networkNodes.length === 0" class="question-network-empty">
+    <p class="a-text--body">No questions found. Add questions to see their relationships.</p>
+  </div>
+
+  <div *ngIf="networkNodes.length > 0" class="question-network-horizontal">
+    <!-- Nodes and Connection Lines -->
+    <div class="network-horizontal">
+      <!-- Render root nodes first -->
+      <ng-container *ngFor="let rootNode of rootNodes">
+        <!-- Root Question Node with Children -->
+        <div class="tree-node-horizontal">
+          <!-- Parent Node -->
+          <div class="parent-node">
+            <div class="question-node root-node"
+                 [ngClass]="{'selected': isSelected(rootNode)}"
+                 (click)="onQuestionClick(rootNode)">
+              <mat-card class="m-card">
+                <mat-card-content>
+                  <div class="question-node-header">
+                    <span class="question-node-id">ID: {{ rootNode.question.questionId }}</span>
+                    <!-- Toggle button for expanding/collapsing children -->
+                    <button *ngIf="rootNode.children.length > 0" mat-icon-button color="primary"
+                            class="toggle-expand-button"
+                            (click)="toggleNodeExpanded(rootNode, $event)"
+                            [matTooltip]="rootNode.expanded ? 'Collapse children' : 'Expand children'">
+                      <mat-icon>{{ rootNode.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                    </button>
+                  </div>
+                  <div class="question-node-text">{{ rootNode.question.text }}</div>
+
+                  <!-- Possible Answers -->
+                  <div *ngIf="rootNode.question.possibleAnswers && rootNode.question.possibleAnswers.length > 0" class="question-node-answers">
+                    <span *ngFor="let answer of rootNode.question.possibleAnswers; let i = index" class="question-node-answer">
+                      {{ answer }}
+                      <button mat-icon-button color="primary"
+                              class="add-nested-button"
+                              (click)="$event.stopPropagation(); onAddNestedQuestion(rootNode, answer)"
+                              matTooltip="Add nested question for this answer">
+                        <mat-icon>add_circle</mat-icon>
+                      </button>
+                    </span>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+
+          <!-- Child nodes container -->
+          <div *ngIf="rootNode.children.length > 0" class="children-container" [ngClass]="{'children-collapsed': !rootNode.expanded}">
+            <ng-container *ngFor="let childNode of rootNode.children; let i = index">
+              <div class="child-row" *ngIf="rootNode.expanded">
+                <!-- Connection Label -->
+                <div class="connection-label" *ngIf="childNode?.triggerAnswer">
+                  {{ childNode.triggerAnswer }}
+                  <span *ngIf="isDependentQuestion(childNode)" class="operation-type">
+                    ({{ getOperationType(childNode.question) }})
+                  </span>
+                </div>
+
+                <!-- Child Question Node -->
+                <div class="question-node child-node"
+                     [ngClass]="{
+                       'selected': isSelected(childNode),
+                       'small-node': hasMultipleChildren(rootNode)
+                     }"
+                     (click)="onQuestionClick(childNode)">
+                  <mat-card class="m-card">
+                    <mat-card-content>
+                      <div class="question-node-header">
+                        <span class="question-node-id">ID: {{ childNode.question.questionId }}</span>
+                        <!-- Toggle button for expanding/collapsing children -->
+                        <button *ngIf="childNode.children.length > 0" mat-icon-button color="primary"
+                                class="toggle-expand-button"
+                                (click)="toggleNodeExpanded(childNode, $event)"
+                                [matTooltip]="childNode.expanded ? 'Collapse children' : 'Expand children'">
+                          <mat-icon>{{ childNode.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                        </button>
+                      </div>
+                      <div class="question-node-text">{{ childNode.question.text }}</div>
+
+                      <!-- Possible Answers -->
+                      <div *ngIf="childNode.question.possibleAnswers && childNode.question.possibleAnswers.length > 0" class="question-node-answers">
+                        <span *ngFor="let answer of childNode.question.possibleAnswers; let i = index" class="question-node-answer">
+                          {{ answer }}
+                          <button mat-icon-button color="primary"
+                                  class="add-nested-button"
+                                  (click)="$event.stopPropagation(); onAddNestedQuestion(childNode, answer)"
+                                  matTooltip="Add nested question for this answer">
+                            <mat-icon>add_circle</mat-icon>
+                          </button>
+                        </span>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

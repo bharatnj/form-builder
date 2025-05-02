@@ -1,0 +1,230 @@
+<div class="t-questionnaire-builder" [class.with-preview]="showPreview" *ngIf="isBrowser">
+  <div class="t-questionnaire-builder__header">
+      <div class="o-header__title">
+          <h1 class="a-text--title">Residential Rental Form Builder</h1>
+          <p class="a-text--subtitle">Create and manage questions for your organization</p>
+      </div>
+    <button mat-raised-button color="primary" (click)="togglePreview()" class="a-button preview-button">
+      <mat-icon class="a-icon">{{ showPreview ? 'visibility_off' : 'visibility' }}</mat-icon>
+      {{ showPreview ? 'Hide Preview' : 'Preview Form' }}
+    </button>
+  </div>
+
+  <div class="t-questionnaire-builder__content" [class.with-preview]="showPreview">
+    <!-- Questions List -->
+    <div class="o-question-list" [ngStyle]="questionListStyle">
+      <div class="o-question-list__header">
+        <h2 class="a-text--subtitle">Questions</h2>
+        <div class="o-question-list__actions">
+            <div class="o-question-list__expand-collapse">
+                <button mat-button color="primary" (click)="expandAll()" class="a-button a-button--secondary">
+                    <mat-icon class="a-icon">unfold_more</mat-icon> Expand All
+                </button>
+                <button mat-button color="primary" (click)="collapseAll()" class="a-button a-button--secondary">
+                    <mat-icon class="a-icon">unfold_less</mat-icon> Collapse All
+                </button>
+            </div>
+          <button mat-raised-button color="primary" (click)="addQuestion('start', undefined)" class="a-button">
+            <mat-icon class="a-icon">add</mat-icon> Add Question at Start
+          </button>
+        </div>
+      </div>
+
+      <mat-progress-spinner *ngIf="isLoading" diameter="40" mode="indeterminate" class="u-spinner"></mat-progress-spinner>
+
+      <!-- Form for Add at Start -->
+      <div class="o-form o-form--inline" *ngIf="showForm && formPosition === 'start'">
+        <app-question-form
+          [question]="currentQuestion"
+          [formTitle]="formTitle"
+          [isSaving]="isSaving"
+          [tenantId]="propertyOwnerId"
+          [languages]="languages"
+          [masterTenantQuestions]="masterTenantQuestions"
+          (save)="onSaveQuestion($event)"
+          (cancel)="onCancelQuestion()">
+        </app-question-form>
+      </div>
+
+      <div *ngIf="!isLoading && questions.length === 0" class="o-question-list__empty">
+        <p class="a-text--body">No questions found. Click the button above to add your first question.</p>
+      </div>
+
+      <mat-accordion *ngIf="!isLoading && questions.length > 0" multi="true">
+        <!-- Group level expansion panels -->
+        <mat-expansion-panel *ngFor="let group of availableGroups; let g = index" [expanded]="allExpanded">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ group }}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{ groupedQuestions[group].length }} question(s)
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- Questions within this group -->
+          <mat-accordion class="o-question-list__nested" multi="true">
+            <div cdkDropList (cdkDropListDropped)="onQuestionDrop($event, group)" class="o-question-list__drag-container">
+              <mat-expansion-panel *ngFor="let question of groupedQuestions[group]; let i = index"
+                                  [expanded]="g == editingGroupIndex && editingIndex === questions.indexOf(question)"
+                                  class="o-question-list__item"
+                                  cdkDrag>
+                <mat-expansion-panel-header>
+                  <div class="o-question-list__drag-handle" cdkDragHandle>
+                    <mat-icon>drag_indicator</mat-icon>
+                  </div>
+                  <mat-panel-title>
+                    {{ question.text }}
+                  </mat-panel-title>
+                  <!--<mat-panel-description>
+                    {{ question.type }} | {{ question.dataType }}
+                  </mat-panel-description>-->
+                </mat-expansion-panel-header>
+                  <!-- Question Network/Graph for this group -->
+                  <app-question-network
+                      [questions]="groupedQuestions[group]"
+                      [selectedQuestion]="question"
+                      (questionSelected)="onQuestionSelected($event)"
+                      (addNestedQuestion)="onAddNestedQuestion($event)">
+                  </app-question-network>
+
+              <!-- Form for Add Before -->
+              <div class="o-form o-form--inline" *ngIf="showForm && activeQuestionIndex === questions.indexOf(question) && formPosition === 'before'">
+                <app-question-form
+                  [question]="currentQuestion"
+                  [formTitle]="formTitle"
+                  [isSaving]="isSaving"
+                  [tenantId]="propertyOwnerId"
+                  [languages]="languages"
+                  [masterTenantQuestions]="masterTenantQuestions"
+                  (save)="onSaveQuestion($event)"
+                  (cancel)="onCancelQuestion()">
+                </app-question-form>
+              </div>
+
+              <div class="o-question-list__item-details" *ngIf="!editingGroupIndex || !(g==editingGroupIndex && editingIndex == i)">
+                <p class="a-text--body"><strong>Question ID:</strong> {{ question.questionId }}</p>
+                  <p class="a-text--body"><strong>Question Type:</strong> {{ question.type }}</p>
+                <p class="a-text--body"><strong>Groups:</strong> {{ question.groups.join(', ') }}</p>
+                <p class="a-text--body"><strong>Language:</strong> {{ question.languageId || 'en_US' }}</p>
+                <p class="a-text--body" *ngIf="question.possibleAnswers && question.possibleAnswers.length > 0">
+                  <strong>Possible Answers:</strong> {{ question.possibleAnswers.join(', ') }}
+                </p>
+                <p class="a-text--body"><strong>Additional User Input Required:</strong> {{ question.additionalUserInputRequired ? 'Yes' : 'No' }}</p>
+                <p class="a-text--body" *ngIf="question.additionalUserInputRequired"><strong>Additional User Input Field Label:</strong> {{ question.additionalUserInputFieldLabel }}</p>
+              </div>
+
+              <div class="o-question-list__item-actions" *ngIf="!editingGroupIndex || !(g==editingGroupIndex && editingIndex == i)">
+                <button mat-button color="primary" (click)="editQuestion(questions.indexOf(question), g)" class="a-button a-button--secondary">
+                  <mat-icon class="a-icon">edit</mat-icon> Edit
+                </button>
+                <button mat-button color="accent" (click)="addQuestionBefore(questions.indexOf(question), group)" class="a-button a-button--secondary">
+                  <mat-icon class="a-icon">arrow_upward</mat-icon> Add Before
+                </button>
+                <button mat-button color="accent" (click)="addQuestionAfter(questions.indexOf(question), group)" class="a-button a-button--secondary">
+                  <mat-icon class="a-icon">arrow_downward</mat-icon> Add After
+                </button>
+                <button mat-button color="warn" (click)="deleteQuestion(questions.indexOf(question))" class="a-button a-button--secondary">
+                  <mat-icon class="a-icon">delete</mat-icon> Delete
+                </button>
+              </div>
+
+                <!-- Form for edit-->
+                <div class="o-form o-form--inline" *ngIf="editingQuestion && g==editingGroupIndex && showForm && activeQuestionIndex === questions.indexOf(question) && formPosition === 'inline'">
+                    <app-question-form
+                        [question]="currentQuestion"
+                        [formTitle]="formTitle"
+                        [isSaving]="isSaving"
+                        [tenantId]="propertyOwnerId"
+                        [languages]="languages"
+                        [masterTenantQuestions]="masterTenantQuestions"
+                        (save)="onSaveQuestion($event)"
+                        (cancel)="onCancelQuestion()">
+                    </app-question-form>
+                </div>
+
+              <!-- Form for Add After -->
+              <div class="o-form o-form--inline" *ngIf="showForm && activeQuestionIndex === questions.indexOf(question) && formPosition === 'after'">
+                <app-question-form
+                  [question]="currentQuestion"
+                  [formTitle]="formTitle"
+                  [isSaving]="isSaving"
+                  [tenantId]="propertyOwnerId"
+                  [languages]="languages"
+                  [masterTenantQuestions]="masterTenantQuestions"
+                  (save)="onSaveQuestion($event)"
+                  (cancel)="onCancelQuestion()">
+                </app-question-form>
+              </div>
+            </mat-expansion-panel>
+            </div>
+              <div >
+                  <button mat-button color="primary" (click)="addQuestion(0, group)" *ngIf="g!=editingGroupIndex" class="a-button a-button--secondary">
+                      <mat-icon class="a-icon">add</mat-icon> Add New Question
+                  </button>
+                  <!-- Form for Add After -->
+                  <div class="o-form o-form--inline" *ngIf="showForm && g==editingGroupIndex ">
+                      <app-question-form
+                          [question]="currentQuestion"
+                          [formTitle]="formTitle"
+                          [isSaving]="isSaving"
+                          [tenantId]="propertyOwnerId"
+                          [languages]="languages"
+                          [masterTenantQuestions]="masterTenantQuestions"
+                          (save)="onSaveQuestion($event)"
+                          (cancel)="onCancelQuestion()">
+                      </app-question-form>
+                  </div>
+              </div>
+          </mat-accordion>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <div *ngIf="!isLoading && questions.length > 0" class="o-question-list__footer">
+          <div class="o-question-list__expand-collapse">
+              <button mat-button color="primary" (click)="expandAll()" class="a-button a-button--secondary">
+                  <mat-icon class="a-icon">unfold_more</mat-icon> Expand All
+              </button>
+              <button mat-button color="primary" (click)="collapseAll()" class="a-button a-button--secondary">
+                  <mat-icon class="a-icon">unfold_less</mat-icon> Collapse All
+              </button>
+          </div>
+          <button mat-raised-button color="primary" (click)="addQuestion('end', undefined)" class="a-button">
+              <mat-icon class="a-icon">add</mat-icon> Add Question at End
+          </button>
+      </div>
+
+      <!-- Form for Add at End -->
+      <div class="o-form o-form--inline" *ngIf="showForm && formPosition === 'end'">
+        <app-question-form
+          [question]="currentQuestion"
+          [formTitle]="formTitle"
+          [isSaving]="isSaving"
+          [tenantId]="propertyOwnerId"
+          [languages]="languages"
+          [masterTenantQuestions]="masterTenantQuestions"
+          (save)="onSaveQuestion($event)"
+          (cancel)="onCancelQuestion()">
+        </app-question-form>
+      </div>
+    </div>
+
+    <!-- Resizable Divider -->
+    <div class="o-resizable-divider" *ngIf="showPreview" (mousedown)="startResize($event)"></div>
+
+    <!-- Preview Container -->
+    <div class="o-preview-container" *ngIf="showPreview" [ngStyle]="previewContainerStyle">
+      <div class="o-preview-container__header">
+        <h2 class="a-text--subtitle">Residential Rental Form Preview</h2>
+        <button mat-icon-button color="primary" (click)="initializePreviewForm()" class="reload-button" matTooltip="Reload Preview">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+      <div class="o-preview-container__content">
+        <div class="o-preview-form">
+          <app-residential-rental-form [refreshTrigger]="refreshTrigger"></app-residential-rental-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

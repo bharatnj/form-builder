@@ -1,0 +1,62 @@
+.m-card {
+  margin-bottom: 20px;
+}
+
+.o-form__row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.u-full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.m-form-field--half {
+  width: calc(50% - 8px);
+}
+
+.m-possible-answers {
+  margin-bottom: 16px;
+
+  h3 {
+    margin-bottom: 12px;
+    font-size: 16px;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+
+    .m-possible-answers__field {
+      flex: 1;
+    }
+
+    .a-button--icon {
+      margin-left: 8px;
+    }
+  }
+
+  .a-button--secondary {
+    margin-top: 8px;
+  }
+}
+
+.o-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.u-spinner--button {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.m-checkbox {
+  margin-bottom: 16px;
+}

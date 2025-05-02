@@ -1,0 +1,101 @@
+<h3 class="a-text--subtitle">{{ formTitle }}</h3>
+<form [formGroup]="questionForm" (ngSubmit)="onSubmit()" class="o-form">
+  <mat-card class="m-card">
+    <mat-card-content>
+      <!-- Question Text with Autocomplete -->
+      <mat-form-field appearance="outline" class="m-form-field u-full-width">
+        <mat-label>Question Text</mat-label>
+        <input matInput formControlName="text" required [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onQuestionTextSelected($event.option.value)">
+          <mat-option *ngFor="let text of filteredQuestionTexts | async" [value]="text">
+            {{text}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="questionForm.get('text')?.hasError('required')">
+          Question text is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Question Type -->
+      <div class="o-form__row">
+        <mat-form-field appearance="outline" class="m-form-field m-form-field--half">
+          <mat-label>Question Type</mat-label>
+          <mat-select formControlName="type" (selectionChange)="onTypeChange()">
+            <mat-option [value]="option" *ngFor="let option of questionTypes">{{option}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="m-form-field m-form-field--half" *ngIf="questionForm.get('type')?.value !== QuestionType.YesNo">
+          <mat-label>Data Type</mat-label>
+          <mat-select formControlName="dataType">
+            <mat-option [value]="option" *ngFor="let option of qaDataTypes">{{option}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Question Groups -->
+      <mat-form-field appearance="outline" class="m-form-field u-full-width">
+        <mat-label>Groups</mat-label>
+        <mat-select formControlName="groups" multiple required>
+          <mat-option *ngFor="let questionGroup of questionGroups" [value]="questionGroup">{{questionGroup}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="questionForm.get('groups')?.hasError('required')">
+          At least one group is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Language -->
+      <mat-form-field appearance="outline" class="m-form-field u-full-width">
+        <mat-label>Language</mat-label>
+        <mat-select formControlName="languageId" required>
+          <mat-option *ngFor="let language of languages" [value]="language.code">
+            {{ language.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="questionForm.get('languageId')?.hasError('required')">
+          Language is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Possible Answers (for closed questions) -->
+      <div *ngIf="questionForm.get('type')?.value !== QuestionType.OpenEnded" formArrayName="possibleAnswers" class="m-possible-answers">
+        <h3 class="a-text--subtitle">Possible Answers</h3>
+        <div *ngFor="let control of possibleAnswers.controls; let i = index" class="m-possible-answers__row">
+          <mat-form-field appearance="outline" class="m-form-field m-possible-answers__field">
+            <mat-label>Answer {{ i + 1 }}</mat-label>
+            <input matInput [formControlName]="i" required [readonly]="questionForm.get('type')?.value === QuestionType.YesNo">
+            <mat-error *ngIf="possibleAnswers.at(i)?.hasError('required')">
+              Answer is required
+            </mat-error>
+          </mat-form-field>
+          <button mat-icon-button type="button" color="warn" (click)="removePossibleAnswer(i)" class="a-button a-button--icon" *ngIf="questionForm.get('type')?.value != QuestionType.YesNo">
+            <mat-icon class="a-icon">remove_circle</mat-icon>
+          </button>
+        </div>
+        <button mat-button type="button" color="primary" (click)="addPossibleAnswer('')" class="a-button a-button--secondary" *ngIf="questionForm.get('type')?.value != QuestionType.YesNo">
+          <mat-icon class="a-icon">add</mat-icon> Add Answer
+        </button>
+      </div>
+
+      <!-- Additional Options -->
+      <div class="o-form__row">
+        <mat-checkbox formControlName="additionalUserInputRequired" class="m-checkbox">
+          Additional user input Required?
+        </mat-checkbox>
+      </div>
+
+      <mat-form-field appearance="outline" class="m-form-field u-full-width" *ngIf="questionForm.get('additionalUserInputRequired')?.value">
+        <mat-label>Additional user input field label</mat-label>
+        <input matInput formControlName="additionalUserInputFieldLabel">
+        <mat-hint>This is the label that will be displayed to user </mat-hint>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button type="button" (click)="onCancel()" class="a-button a-button--secondary">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="questionForm.invalid || isSaving" class="a-button">
+        <mat-spinner *ngIf="isSaving" diameter="20" class="u-spinner--button"></mat-spinner>
+        <span *ngIf="!isSaving">Save Question</span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

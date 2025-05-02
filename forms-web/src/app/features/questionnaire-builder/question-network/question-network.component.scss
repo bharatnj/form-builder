@@ -1,0 +1,285 @@
+.question-network-container {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.question-network-empty {
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-network-horizontal {
+  padding: 30px;
+  position: relative;
+  min-height: 200px;
+  overflow: auto; /* Allow both horizontal and vertical scrolling if needed */
+  border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+
+  .network-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .tree-node-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .parent-node {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    min-height: 100px;
+  }
+
+  // Only show connection line when parent has children
+  .parent-node + .children-container {
+    &:after {
+      content: '';
+      position: absolute;
+      left: -60px;
+      top: 50%;
+      width: 60px;
+      height: 2px;
+      background-color: #3f51b5;
+      transform: translateY(-50%);
+    }
+  }
+
+  .children-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    margin-left: 20px;
+    padding-left: 20px;
+
+    // Main vertical connection line
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 97px;
+      bottom: 97px;
+      width: 2px;
+      background-color: #3f51b5;
+    }
+
+    // When children are collapsed
+    &.children-collapsed {
+      &:before {
+        height: 20px; // Show just a small part of the vertical line when collapsed
+      }
+    }
+  }
+
+  .child-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+
+    // Horizontal connection line to child
+    &:before {
+      content: '';
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      width: 19px; // Reduce width slightly to ensure it doesn't extend into the child node
+      height: 2px;
+      background-color: #3f51b5;
+      transform: translateY(-50%);
+    }
+
+    .connection-label {
+      top: -15px;
+      left: -30px;
+      background-color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+      white-space: nowrap;
+
+      .operation-type {
+        font-weight: bold;
+        color: #3f51b5;
+      }
+    }
+  }
+}
+
+.question-node {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.2s ease-in-out;
+  min-width: 200px;
+  max-width: 300px;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &.selected {
+    .m-card {
+      border: 2px solid #3f51b5;
+      box-shadow: 0 4px 8px rgba(63, 81, 181, 0.3);
+    }
+  }
+
+  &.root-node {
+    .m-card {
+      border-left: 4px solid #4caf50; // Green border for root nodes
+    }
+  }
+
+  &.small-node {
+    min-width: 150px;
+    max-width: 250px;
+    font-size: 0.9em;
+
+    .question-node-text {
+      font-size: 0.9em;
+    }
+
+    .question-node-answers {
+      .question-node-answer {
+        font-size: 0.8em;
+      }
+    }
+  }
+
+  .m-card {
+    height: 100%;
+    transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+  }
+}
+
+.question-node-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+
+  .question-node-type {
+    font-weight: bold;
+    color: #3f51b5;
+  }
+
+  .question-node-id {
+    font-size: 0.8em;
+    color: #757575;
+  }
+
+  .toggle-expand-button {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    margin-left: 4px;
+
+    .mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+    }
+  }
+}
+
+.question-node-text {
+  font-size: 1em;
+  margin-bottom: 12px;
+  word-break: break-word;
+}
+
+.question-node-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .question-node-answer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 8px;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+    font-size: 0.9em;
+
+    .add-nested-button {
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+
+      .mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+      }
+    }
+  }
+}
+
+// Removed .connection-arrow class as it's no longer needed in the tree layout
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .question-network-horizontal {
+    padding: 15px;
+
+    .tree-node-horizontal {
+      gap: 20px;
+    }
+
+    .parent-node {
+      // No connection line by default
+    }
+
+    // Only show connection line when parent has children (responsive)
+    .parent-node + .children-container {
+      &:after {
+        left: -20px;
+        width: 20px;
+      }
+    }
+
+    .children-container {
+      margin-left: 10px;
+      padding-left: 10px;
+      gap: 15px;
+    }
+
+    .child-row {
+      &:before {
+        left: -10px;
+        width: 9px; // Reduce width slightly to ensure it doesn't extend into the child node
+      }
+
+      .connection-label {
+        left: -20px;
+        font-size: 0.7em;
+      }
+    }
+
+    .question-node {
+      min-width: 150px;
+
+      &.small-node {
+        min-width: 120px;
+        max-width: 200px;
+      }
+    }
+  }
+}
