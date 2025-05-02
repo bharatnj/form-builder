@@ -1,0 +1,116 @@
+
+<!--<div [formGroup]="questionForm" class="step-form">-->
+<mat-progress-spinner *ngIf="isLoading" diameter="40" mode="indeterminate" class="loading-spinner"></mat-progress-spinner>
+    <div *ngIf="!isLoading && questions && form" #formContainer>
+        <ng-container *ngIf="ensureFormControlsExist()"></ng-container>
+        <ng-container *ngFor="let question of questions; let i = index">
+            <div *ngIf="form && i < form.length && form.at(i) && shouldShowQuestion(question.questionId)" style="width: 100%; " [formGroup]="form.at(i)">
+                <div class="step-form-question-text" style="margin-top: 20px;width: 100%;" *ngIf="question.type !== QuestionType.SingleChoice && question.type !== QuestionType.YesNo">
+                    <strong>{{ question.text }}</strong>
+                </div>
+                <!-- Open-Ended Text Question -->
+                <div *ngIf="question.type === QuestionType.OpenEnded" class="step-form-question">
+                    <!-- Numeric Question -->
+                    <div *ngIf="question.dataType === QADataType.Numeric" class="step-form-question">
+                        <mat-form-field appearance="outline" class="step-form-field" style="width: 100%;">
+                            <!--<mat-label>{{ question.text }}</mat-label>-->
+                            <input type="number" matInput (input)="onInputChange(i,$event)" />
+                        </mat-form-field>
+                    </div>
+                    <!-- Date Question -->
+                    <div *ngIf="question.dataType === QADataType.Date" class="step-form-question" >
+                        <mat-form-field appearance="outline" class="step-form-field" style="width: 100%;">
+                            <!--<mat-label>{{ question.text }}</mat-label>-->
+                            <input matInput [matDatepicker]="picker" (input)="onInputChange(i,$event)"/>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <!-- Text Question -->
+                    <div *ngIf="question.dataType === QADataType.String" class="step-form-question">
+                        <mat-form-field appearance="outline" class="step-form-field" style="width: 100%;">
+                            <!--<mat-label >{{ question.text }}</mat-label>-->
+                            <input matInput (input)="onInputChange(i,$event)"/>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Single Select Question -->
+                <div *ngIf="question.type === QuestionType.SingleChoice" class="step-form-question" style="width: 100%;margin-bottom: 20px;" >
+
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; width: 100%;">
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <div class="step-form-question-text" style="flex-wrap: wrap;">
+                                <strong>{{ question.text }}</strong>
+                            </div>
+                            <mat-form-field appearance="outline" class="step-form-field" floatLabel="always" style="flex:1;" >
+                                <!--<mat-label>{{ question.text }}</mat-label>-->
+                                <mat-select formControlName="answer" (selectionChange)="updateValueAndValidity()">
+                                    <mat-option value="" disabled>Select an option</mat-option>
+                                    <mat-option *ngFor="let option of question.possibleAnswers" [value]="option" >{{ option }}</mat-option>
+                                </mat-select>
+                                <app-field-validation-error *ngIf="form.controls[i]?.controls?.answer" [control]="form.controls[i].controls.answer" [errorMessage]="'You must select at least one option.'"
+                                                            [errorCode]="'required'"></app-field-validation-error>
+
+                            </mat-form-field>
+                        </div>
+
+                        <div *ngIf="question.additionalUserInputRequired && form.controls[i]?.controls?.answer?.value === 'Yes'">
+                            <div class="step-form-question-text" style="margin-bottom: 10px;">
+                                <strong>{{ question.additionalUserInputFieldLabel }}</strong>
+                            </div>
+                            <mat-form-field appearance="outline" class="step-form-field" floatLabel="always" >
+                                <textarea matInput formControlName="explanation"> </textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Multi-Select Question -->
+                <div *ngIf="question.type === QuestionType.MultipleChoice" class="step-form-question">
+                    <mat-form-field appearance="outline" class="step-form-field" floatLabel="always" style="width: 100%;">
+                        <!--<mat-label>{{ question.text }}</mat-label>-->
+                        <mat-select multiple formControlName="answers" (selectionChange)="updateValueAndValidity()">
+                            <mat-option value="" disabled>Select an option</mat-option>
+                            <mat-option *ngFor="let option of question.possibleAnswers" [value]="option">{{ option }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-chip-set *ngIf="form.controls[i]?.controls?.answers">
+                        <mat-chip *ngFor="let option of form.controls[i]?.controls?.answers?.value || []" (removed)="removeOption(i, option)">
+                            {{ option }}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-set>
+                </div>
+
+                <!-- Yes/No Question -->
+                <div *ngIf="question.type === 'Yes/No'" class="step-form-question" style="width: 100%;margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; width: 100%;">
+                        <div  style="display: grid; gap: 20px; ">
+                            <div class="step-form-question-text" style="flex-wrap: wrap;">
+                                <strong>{{ question.text }}</strong>
+                            </div>
+                            <mat-radio-group formControlName="answer" (change)="updateValueAndValidity()" style="display: flex; gap: 20px;">
+                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                <mat-radio-button value="No">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div *ngIf="question.additionalUserInputRequired && form.controls[i]?.controls?.answer?.value === 'Yes'" style="display: flex; flex-direction: column; margin: auto;margin-top: 20px;">
+                            <div class="step-form-question-text" style="margin-bottom: 10px;">
+                                <strong>{{ question.additionalUserInputFieldLabel }}</strong>
+                            </div>
+                            <mat-form-field appearance="outline" class="step-form-field" floatLabel="always">
+                                <textarea matInput formControlName="explanation"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </ng-container>
+        <!--<button mat-button class="default-btn" (click)="printQForm()">Print</button>-->
+    </div>
+
+<!--</div>-->

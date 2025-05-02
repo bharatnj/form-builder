@@ -1,0 +1,4 @@
+<!--<div *ngIf="control?.invalid">
+  <div *ngIf="control?.hasError(errorCode)">{{ getErrorMessage() }}</div>
+</div>-->
+<mat-error *ngIf="control?.invalid && (!control?.untouched || control?.dirty) && control?.hasError(errorCode)">{{ getErrorMessage() }}</mat-error>
