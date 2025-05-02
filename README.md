@@ -80,6 +80,31 @@ This project is licensed under a proprietary license owned by Spectrayan. The co
 
 See the [LICENSE](./LICENSE) file for full details.
 
+## Development Guidelines
+
+### Commit Strategy
+
+This project follows an incremental commit strategy organized by module and functionality. Please refer to the [Commit Strategy](./COMMIT_STRATEGY.md) document for detailed guidelines on how to structure your commits and write meaningful commit messages.
+
+A commit message template is available in [commit-template.txt](./commit-template.txt). You can configure Git to use this template with:
+
+```bash
+git config --local commit.template commit-template.txt
+```
+
+For an interactive experience with intelligent suggestions, you can use the commit helper script:
+
+```powershell
+.\commit-helper.ps1
+```
+
+This PowerShell script analyzes your staged files to:
+- Identify which module the changes belong to
+- Suggest appropriate feature/component categories
+- Generate detailed descriptions based on file changes
+
+The script guides you through creating a well-structured commit message while providing smart suggestions based on your actual code changes. You can accept the suggestions or override them with your own input.
+
 ## Contact
 
-For questions or support, contact bharatjoshi@spectrayan.com or bharatnj@outlook.com
+For questions or support, contact bharatnj@outlook.com

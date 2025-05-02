@@ -1,0 +1,12 @@
+type: string
+description: "Person's title."
+enum:
+  - Mr.
+  - Ms.
+  - Mrs.
+  - Miss
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "Mr."
+x-field-label: "Title"

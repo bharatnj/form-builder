@@ -1,0 +1,197 @@
+get:
+  tags:
+    - Landlord
+  summary: Get property-owner by id
+  description: |
+    Retrieves detailed information for a specific landlord identified by the provided ID.
+  operationId: getLandlordById
+  parameters:
+    - name: id
+      in: path
+      description: "The unique identifier of the property-owner for which you want to retrieve the data."
+      required: true
+      schema:
+        type: string
+  security:
+    - main_auth:
+        - read:landlords
+    - api_key: [ ]
+  responses:
+    '200':
+      description: Successfully retrieved the property-owner information for the specified ID.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/property-owner/PropertyOwner.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to access this property-owner's information.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified property-owner was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+put:
+  tags:
+    - Landlord
+  summary: Update property-owner data
+  description: "This operation allows updating the information of a property-owner. The updated information is provided in the request body."
+  operationId: updateLandlord
+  parameters:
+    - name: id
+      in: path
+      description: "The unique identifier of the property-owner profile to be updated."
+      required: true
+      schema:
+        type: string
+  security:
+    - main_auth:
+        - 'write:landlords'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/property-owner/PropertyOwner.yaml'
+      application/xml:
+        schema:
+          $ref: '../../components/schemas/property-owner/PropertyOwner.yaml'
+    description: Updated property-owner information including name, contact information, and other relevant data.
+    required: true
+  responses:
+    '200':
+      description: Successfully updated the property-owner profile. Returns a confirmation with status and message.
+      content:
+        application/json:
+          example:
+            status: 200
+            message: OK
+    '400':
+      description: Bad Request - The request was malformed or contained invalid property-owner data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to update this property-owner's information.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified property-owner was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '405':
+      description: Method Not Allowed - The requested method is not supported for this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '409':
+      description: Conflict - The update would result in a conflict with existing data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+delete:
+  tags:
+    - Admin
+  summary: Delete a property-owner
+  description: "This operation permanently deletes all data associated with the specified property-owner. Only administrators with appropriate permissions can perform this operation."
+  operationId: deleteLandlord
+  parameters:
+    - name: api_key
+      in: header
+      required: false
+      description: "API key for authentication."
+      schema:
+        type: string
+        example: 'Bearer <TOKEN>'
+    - name: id
+      in: path
+      description: "The unique identifier of the property-owner profile to be deleted."
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      $ref: '../../components/schemas/common/Success.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to delete this property-owner.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified property-owner was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '405':
+      description: Method Not Allowed - The requested method is not supported for this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+  security:
+    - main_auth:
+        - 'read:landlords'
+        - 'write:landlords'
+    - api_key: [ ]
+description: Landlord APIs
+

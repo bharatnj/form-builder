@@ -1,0 +1,16 @@
+generatorName: typescript-angular
+outputDir: ../forms-web/src/app/generated
+inputSpec: '/src/main/resources/forms-builder-v1.yaml'
+generateApis: false
+templateDir: forms-openapi/src/main/resources/templates
+typeMappings:
+  DateTime: "Date"
+  Date: "Date"
+  date: "Date"
+additionalProperties:
+  mat-form-field-appearance: outline
+  fileNaming: kebab-case
+files:
+  modelGeneric.mustache:
+    templateType: Model
+    destinationFilename: .ts

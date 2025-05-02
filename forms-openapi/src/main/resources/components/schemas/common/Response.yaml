@@ -1,0 +1,9 @@
+type: object
+description: A generic response message
+properties:
+  status:
+    type: integer
+    example: 200
+  message:
+    type: string
+    example: "Resource successfully deleted"

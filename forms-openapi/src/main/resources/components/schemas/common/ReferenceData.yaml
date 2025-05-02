@@ -1,0 +1,9 @@
+allOf:
+  - $ref: 'BaseModel.yaml'
+  - properties:
+      propertyOwnerId:
+        description: "The property owner id this object is associated with"
+        type: string
+      languageId:
+        description: "The language id this object is associated with"
+        type: string

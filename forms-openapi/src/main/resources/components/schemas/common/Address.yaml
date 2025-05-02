@@ -1,0 +1,41 @@
+type: object
+x-form-data: true
+properties:
+  type:
+    $ref: 'AddressType.yaml'
+  addressLine1:
+    type: string
+    example: "123 Main St"
+    x-form-field: true
+    x-field-label: Address Line 1
+  addressLine2:
+    type: string
+    example: "Apt 123"
+    x-form-field: true
+    x-field-label: Address Line 2
+  city:
+    type: string
+    example: "Anytown"
+    x-form-field: true
+    x-field-label: City
+  state:
+    type: string
+    example: "CA"
+    x-form-field: true
+    x-field-label: State
+  zipCode:
+    type: string
+    example: "90210"
+    x-form-field: true
+    x-field-label: Zipcode
+  country:
+    type: string
+    example: "USA"
+    x-form-field: true
+    x-field-label: Country
+required:
+  - addressLine1
+  - city
+  - state
+  - zipCode
+  - country

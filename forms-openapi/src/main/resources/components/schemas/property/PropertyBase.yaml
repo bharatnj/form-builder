@@ -1,0 +1,38 @@
+x-class-extra-annotation: |- 
+  @com.google.cloud.spring.data.firestore.Document(collectionName="properties")
+  @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+x-form-data: true
+allOf:
+  - $ref: '../common/BaseModel.yaml'
+  - properties:
+      type:
+        $ref: 'PropertyType.yaml'
+      sqft:
+        description: "The square footage of the property"
+        type: number
+        format: float
+        x-form-field: true
+        x-field-label: "Square Feet"
+      bedrooms:
+        description: "The number of bedrooms in the property"
+        type: integer
+        format: int32
+        x-form-field: true
+        x-field-label: "Bedrooms"
+      rentAmount:
+        description: "The monthly rent amount for the property"
+        type: number
+        format: float
+        x-form-field: true
+        x-field-label: "Rent Amount"
+      address:
+        x-form-embedded: true
+        x-field-label: Address
+        $ref: '../common/Address.yaml'
+
+    type: object
+    required:
+      - type
+      - sqft
+      - bedrooms
+      - rentAmount

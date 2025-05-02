@@ -1,0 +1,16 @@
+x-form-data: true
+type: object
+properties:
+  optionId:
+    type: string
+  text:
+    description: "The option of a question"
+    type: string
+    minLength: 1
+    x-form-field: true
+    x-field-label: "Option"
+  nextQuestionIds:
+    type: array
+
+required:
+  - text

@@ -1,0 +1,10 @@
+type: string
+description: "Operation Type"
+enum:
+  - And
+  - Or
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "Operation Type"
+x-field-label: "Or"

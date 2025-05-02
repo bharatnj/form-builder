@@ -1,0 +1,116 @@
+get:
+  tags:
+    - PropertyOwnerQuestion
+  summary: Get all questions for a property owner
+  description: Retrieves a list of all questions associated with a property owner. The response is paginated.
+  operationId: getPropertyOwnerQuestions
+  x-spring-paginated: true
+  parameters:
+    - name: propertyOwnerId
+      in: query
+      description: "The unique identifier of the property owner for which to retrieve questions."
+      required: false
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successfully retrieved the list of questions.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../components/schemas/common/Question.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to access the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The requested questions were not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+post:
+  tags:
+    - PropertyOwnerQuestion
+  summary: Create new question for a property owner
+  description: |
+    Creates a new question associated with a property owner. The question information is provided in the request body.
+  operationId: createPropertyOwnerQuestion
+  requestBody:
+    description: Question information to be created.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/common/Question.yaml'
+  responses:
+    '200':
+      description: Successfully created the question. Returns the created question object.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/Question.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid question data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to create questions.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '409':
+      description: Conflict - A question with the same identifying information already exists.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+description: Property Owner Question APIs
+x-content-type: application/json
+x-accepts:
+  - application/json
+x-tags:
+  - tag: PropertyOwnerQuestion

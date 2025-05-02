@@ -1,0 +1,14 @@
+type: object
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-label: "Depends On"
+properties:
+  questionId:
+    description: "The id of question"
+    type: string
+  answer:
+    type: string
+required:
+  - answer
+  - questionId

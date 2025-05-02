@@ -1,0 +1,12 @@
+type: string
+description: "Question & Answer Data Type."
+enum:
+  - Numeric
+  - Date
+  - String
+  - Textarea
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "String"
+x-field-label: "Data Type"

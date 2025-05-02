@@ -1,0 +1,13 @@
+x-class-extra-annotation: |- 
+  @com.google.cloud.spring.data.firestore.Document(collectionName="properties")
+  @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+x-form-data: true
+allOf:
+  - $ref: 'PropertyBase.yaml'
+  - properties:
+      questionAnswers:
+        type: array
+        items:
+          $ref: '../common/QuestionAnswer.yaml'
+        x-form-data: true
+    type: object

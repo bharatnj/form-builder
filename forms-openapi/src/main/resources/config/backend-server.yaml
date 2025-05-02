@@ -1,0 +1,68 @@
+skipValidateSpec: 'false'
+inputSpec: '/src/main/resources/forms-builder-v1.yaml'
+generatorName: spring
+outputDir: ../forms.builder-apis
+artifactId: forms.builder-apis
+groupId: com.forms.builder
+artifactVersion: 1.0.0
+cleanupOutput: 'false'
+generateSupportingFiles: 'true'
+generateModels: 'true'
+generateApis: 'true'
+generateModelTests: 'false'
+generateApiTests: 'true'
+generateModelDocumentation: 'true'
+generateApiDocumentation: 'true'
+openapiNormalizer:
+  REF_AS_PARENT_IN_ALLOF: true
+globalProperties:
+  debugOpenAPI: 'true'
+additionalProperties:
+  title: forms.builder-app
+  dateLibrary: java8
+  openApiNullable: 'false'
+  delegatePattern: 'false'
+  basePackage: com.forms.builder.api
+  invokerPackage: com.forms.builder.api
+  apiPackage: com.forms.builder.api.controller
+  modelPackage: com.forms.builder.api.model
+  configPackage: com.forms.builder.api.config
+  sourceFolder: src/main/generated
+  resourceFolder: src/main/resources
+  documentationProvider: springdoc
+  useJakartaEe: 'true'
+  serializableModel: 'true'
+  useBeanValidation: 'true'
+  hideGenerationTimestamp: 'true'
+  parentGroupId: com.forms.builder
+  parentArtifactId: forms.builder-api-parent
+  parentVersion: 1.0.0
+  serializationLibrary: jackson
+  library: spring-boot
+  performBeanValidation: 'true'
+  annotationLibrary: swagger2
+  requestMappingMode: controller
+  unhandledException: 'true'
+  useSpringBoot3: 'true'
+  useSpringController: 'true'
+  useTags: 'true'
+  interfaceOnly: 'true'
+  additionalModelTypeAnnotations: '@lombok.Setter;@lombok.NoArgsConstructor;@lombok.ToString'
+  repositoriesPackage: com.forms.builder.api.repo
+  reactive: 'true'
+  useResponseEntity: 'false'
+files:
+  openapi.mustache:
+    templateType: SupportingFiles
+    destinationFilename: forms.builder-OpenAPI.yaml
+    folder: src/main/resources
+
+ # dynamicModelForm.mustache:
+  #  templateType: Model
+   # destinationFilename: Spec.json
+    #folder: src/main/resources
+  #firestoreReactiveRepository.mustache:
+    #templateType: Model
+    #destinationFilename: Repository.java
+    #package: com.forms.builder.api.repo
+    #folder: src/main/java/com/forms.builder/api/repotemp

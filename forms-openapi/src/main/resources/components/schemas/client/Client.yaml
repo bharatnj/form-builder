@@ -1,0 +1,53 @@
+x-class-extra-annotation: |- 
+  @com.google.cloud.spring.data.firestore.Document(collectionName="clients")
+  @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+x-form-data: true
+allOf:
+  - $ref: 'ClientBase.yaml'
+  - $ref: '../common/Person.yaml'
+  - properties:
+      dob:
+        description: "Client's date of birth"
+        type: string
+        format: date
+        x-field-extra-annotation: "@jakarta.validation.constraints.Past"
+        x-form-field: true
+        x-field-label: "Date Of Birth"
+      about:
+        description: "A short description about client"
+        type: string
+      ssn:
+        description: "Client's Social Security Number"
+        type: string
+        x-form-field: true
+        x-field-label: "Social Security Number"
+      email:
+        description: "Client's email address"
+        type: string
+        format: email
+        x-form-field: true
+        x-field-label: "Email Address"
+      phone:
+        x-form-embedded: true
+        x-field-label: Phone
+        $ref: '../common/Phone.yaml'
+
+      driversLicense:
+        description: "Client's driver's license number"
+        type: string
+        x-form-field: true
+        x-field-label: "Driver's License Number"
+      employment:
+        type: array
+        items:
+          $ref: '../common/Employment.yaml'
+      residence:
+        type: array
+        items:
+          $ref: '../common/Residence.yaml'
+    type: object
+    required:
+      - dob
+      - email
+      - ssn
+      - phone

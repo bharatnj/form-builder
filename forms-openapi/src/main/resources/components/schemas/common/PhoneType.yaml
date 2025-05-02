@@ -1,0 +1,10 @@
+type: string
+description: "The type of phone number."
+enum:
+  - Home
+  - Work
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "Home"
+x-field-label: "Phone Type"

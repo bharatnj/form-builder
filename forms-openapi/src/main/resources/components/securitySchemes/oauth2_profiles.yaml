@@ -1,0 +1,7 @@
+type: oauth2
+flows:
+  clientCredentials:
+    tokenUrl: https://fbuilder.com/oauth/2.0/token
+  authorizationCode:
+    authorizationUrl: https://fbuilder.com/oauth/2.0/auth
+    tokenUrl: https://fbuilder.com/oauth/2.0/token

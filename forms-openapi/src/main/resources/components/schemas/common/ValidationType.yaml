@@ -1,0 +1,13 @@
+type: string
+description: "Question & Answer Data Validation type."
+enum:
+  - required
+  - minimum
+  - maximum
+  - minLength
+  - maxLength
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "String"
+x-field-label: "Data Type"

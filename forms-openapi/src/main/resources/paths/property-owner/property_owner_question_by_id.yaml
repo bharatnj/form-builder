@@ -1,0 +1,165 @@
+get:
+  tags:
+    - PropertyOwnerQuestion
+  summary: Get property owner question by id
+  description: |
+    Retrieves detailed information for a specific question identified by the provided ID.
+  operationId: getPropertyOwnerQuestionById
+  parameters:
+    - name: id
+      in: path
+      description: "The unique identifier of the question for which you want to retrieve the data."
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successfully retrieved the question information for the specified ID.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/Question.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to access this question's information.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified question was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+put:
+  tags:
+    - PropertyOwnerQuestion
+  summary: Update property owner question data
+  description: "This operation allows updating the information of a question. The updated information is provided in the request body."
+  operationId: updatePropertyOwnerQuestion
+  parameters:
+    - name: id
+      in: path
+      description: "The unique identifier of the question to be updated."
+      required: true
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/common/Question.yaml'
+    description: Updated question information.
+    required: true
+  responses:
+    '200':
+      description: Successfully updated the question. Returns the updated question object.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/Question.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid question data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to update this question's information.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified question was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '409':
+      description: Conflict - The update would result in a conflict with existing data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+delete:
+  tags:
+    - PropertyOwnerQuestion
+  summary: Delete a property owner question
+  description: "This operation permanently deletes the specified question."
+  operationId: deletePropertyOwnerQuestion
+  parameters:
+    - name: id
+      in: path
+      description: "The unique identifier of the question to be deleted."
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successfully deleted the question.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/Success.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to delete this question.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified question was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+description: Property Owner Question APIs

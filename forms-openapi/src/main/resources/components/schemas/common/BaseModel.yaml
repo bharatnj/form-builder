@@ -1,0 +1,43 @@
+type: object
+properties:
+  id:
+    description: Unique document id auto generated
+    type: string
+    readOnly: true
+    x-field-extra-annotation:
+      - "@org.springframework.data.annotation.Id"
+      - "@com.fasterxml.jackson.annotation.JsonIgnore"
+      - "@com.google.cloud.firestore.annotation.DocumentId"
+    x-field-is-primary-key: true
+  createdBy:
+    description: "The principal that created the entity containing the field."
+    type: string
+    readOnly: true
+    minLength: 1
+    x-field-extra-annotation:
+      - "@org.springframework.data.annotation.CreatedBy"
+      - "@com.fasterxml.jackson.annotation.JsonIgnore"
+  createdAt:
+    description: "The date and time the entity containing the field was created."
+    type: string
+    readOnly: true
+    format: date-time
+    x-field-extra-annotation:
+      - "@org.springframework.data.annotation.CreatedDate"
+      - "@com.fasterxml.jackson.annotation.JsonIgnore"
+  updatedBy:
+    description: "The principal that recently modified the entity containing the field."
+    type: string
+    readOnly: true
+    minLength: 1
+    x-field-extra-annotation:
+      - "@org.springframework.data.annotation.LastModifiedBy"
+      - "@com.fasterxml.jackson.annotation.JsonIgnore"
+  updatedAt:
+    description: "The date the entity containing the field was recently modified."
+    type: string
+    readOnly: true
+    format: date-time
+    x-field-extra-annotation:
+      - "@org.springframework.data.annotation.LastModifiedDate"
+      - "@com.fasterxml.jackson.annotation.JsonIgnore"

@@ -1,0 +1,13 @@
+type: string
+description: "Question group/category."
+enum:
+  - Client
+  - PropertyOwner
+  - Property
+  - Employment
+  - Residence
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "Client"
+x-field-label: "Group"

@@ -1,0 +1,30 @@
+allOf:
+  - properties:
+      title:
+        $ref: 'PersonTitle.yaml'
+      firstName:
+        description: "Person's first name."
+        type: string
+        minLength: 1
+        maxLength: 12
+        example: Bharat
+        x-form-field: true
+        x-field-label: "First Name"
+      middleName:
+        description: "Person's middle name."
+        type: string
+        x-form-field: true
+        x-field-label: "Middle Name"
+      lastName:
+        description: "Person's last name."
+        type: string
+        minLength: 1
+        example: Joshi
+        x-form-field: true
+        x-field-label: "Last Name"
+      gender:
+        $ref: 'Gender.yaml'
+    type: object
+    required:
+      - firstName
+      - lastName

@@ -1,0 +1,11 @@
+type: string
+description: "Person's gender."
+enum:
+  - Male
+  - Female
+  - Decline To Identify
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "Decline To Identify"
+x-field-label: "Gender"

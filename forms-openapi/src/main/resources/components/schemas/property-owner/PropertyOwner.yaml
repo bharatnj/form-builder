@@ -1,0 +1,28 @@
+x-class-extra-annotation: |- 
+  @com.google.cloud.spring.data.firestore.Document(collectionName="property-owners")
+  @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+x-form-data: true
+allOf:
+  - $ref: '../common/BaseModel.yaml'
+  - $ref: '../common/Person.yaml'
+  - properties:
+      name:
+        description: "The name of the property owner"
+        type: string
+      address:
+        $ref: '../common/Address.yaml'
+      phone:
+        $ref: '../common/Phone.yaml'
+      email:
+        type: string
+        format: email
+        x-form-field: true
+        x-field-label: "Email Address"
+      questionAnswers:
+        type: array
+        items:
+          $ref: '../common/QuestionAnswer.yaml'
+        x-form-data: true
+    type: object
+    required:
+      - name

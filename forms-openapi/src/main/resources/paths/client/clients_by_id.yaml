@@ -1,0 +1,220 @@
+get:
+  tags:
+    - Client
+  summary: Get client by id
+  description: |
+    Retrieves detailed information for a specific client identified by the provided ID.
+    The client must belong to the specified tenant.
+  operationId: getClientById
+  parameters:
+    - in: path
+      name: tenantId
+      required: true
+      description: "The unique identifier of the property-owner."
+      schema:
+        maxLength: 80
+        type: string
+    - name: id
+      in: path
+      description: "The unique identifier of the client for which you want to retrieve the data."
+      required: true
+      schema:
+        type: string
+  security:
+    - main_auth:
+        - read:clients
+    - api_key: [ ]
+  responses:
+    '200':
+      description: Successfully retrieved the client information for the specified ID.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/client/Client.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to access this client's information.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified property-owner or client was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+put:
+  tags:
+    - Client
+  summary: Update client data
+  description: "This operation allows updating the information in a client profile. The update can only be performed by the logged in client or by users with appropriate permissions."
+  operationId: updateClient
+  parameters:
+    - in: path
+      name: tenantId
+      required: true
+      description: "The unique identifier of the property-owner."
+      schema:
+        maxLength: 80
+        type: string
+    - name: id
+      in: path
+      description: "The unique identifier of the client profile to be updated."
+      required: true
+      schema:
+        type: string
+  security:
+    - main_auth:
+        - 'write:clients'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/client/Client.yaml'
+      application/xml:
+        schema:
+          $ref: '../../components/schemas/client/Client.yaml'
+    description: Updated client information including personal details, contact information, and other relevant data.
+    required: true
+  responses:
+    '200':
+      description: Successfully updated the client profile. Returns a confirmation with status and message.
+      content:
+        application/json:
+          example:
+            status: 200
+            message: OK
+    '400':
+      description: Bad Request - The request was malformed or contained invalid client data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to update this client's information.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified property-owner or client was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '405':
+      description: Method Not Allowed - The requested method is not supported for this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '409':
+      description: Conflict - The update would result in a conflict with existing data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+delete:
+  tags:
+    - Admin
+  summary: Delete a client
+  description: "This operation permanently deletes all data associated with the requested client ID. Only administrators with appropriate permissions can perform this operation."
+  operationId: deleteClient
+  parameters:
+    - name: api_key
+      in: header
+      required: false
+      description: "API key for authentication."
+      schema:
+        type: string
+        example: 'Bearer <TOKEN>'
+    - in: path
+      name: tenantId
+      required: true
+      description: "The unique identifier of the property-owner."
+      schema:
+        maxLength: 80
+        type: string
+    - name: id
+      in: path
+      description: "The unique identifier of the client profile to be deleted."
+      example: John78
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      $ref: '../../components/schemas/common/Success.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to delete this client.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified property-owner or client was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '405':
+      description: Method Not Allowed - The requested method is not supported for this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+  security:
+    - main_auth:
+        - 'read:clients'
+        - 'write:clients'
+    - api_key: [ ]
+description: Client APIs
+

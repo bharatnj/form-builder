@@ -1,0 +1,123 @@
+get:
+  tags:
+    - Landlord
+  summary: Get all landlords
+  description: Retrieves a list of all landlords. The response is paginated.
+  operationId: getLandlords
+  x-spring-paginated: true
+  #security:
+    #- main_auth:
+    #    - read:landlords
+    #- api_key: [ ]
+  responses:
+    '200':
+      description: Successfully retrieved the list of landlords.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../components/schemas/property-owner/PropertyOwner.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to access the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The requested landlords were not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+post:
+  tags:
+    - Landlord
+  summary: Create new property-owner
+  description: |
+    Creates a new landlord profile. The landlord information is provided in the request body.
+  operationId: createLandlord
+  #security:
+   # - main_auth:
+    #    - write:landlords
+    #- api_key: [ ]
+  requestBody:
+    description: Landlord information to be created including name, contact information, and other relevant data.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/property-owner/PropertyOwner.yaml'
+  responses:
+    '200':
+      description: Successfully created the property-owner profile. Returns the created property-owner object.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/property-owner/PropertyOwner.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid property-owner data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to create landlords.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '405':
+      description: Method Not Allowed - The requested method is not supported for this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '409':
+      description: Conflict - A property-owner with the same identifying information already exists.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+description: Landlord APIs
+x-content-type: application/json
+x-accepts:
+    - application/json
+x-tags:
+    - tag: Landlord

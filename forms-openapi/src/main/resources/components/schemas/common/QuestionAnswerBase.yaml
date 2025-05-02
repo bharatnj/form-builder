@@ -1,0 +1,8 @@
+type: object
+x-form-data: true
+properties:
+  questionAnswers:
+    type: array
+    items:
+      $ref: 'QuestionAnswer.yaml'
+    x-form-data: true

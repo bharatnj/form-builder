@@ -1,0 +1,14 @@
+type: string
+description: "Type of employment"
+enum:
+  - FullTime
+  - PartTime
+  - Contract
+  - SelfEmployed
+  - Unemployed
+example: "FullTime"
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "FullTime"
+x-field-label: "Employment Type"

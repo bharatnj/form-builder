@@ -1,0 +1,123 @@
+get:
+  tags:
+    - Property
+  summary: Get all properties
+  description: Retrieves a list of all properties. The response is paginated.
+  operationId: getProperties
+  x-spring-paginated: true
+  #security:
+    #- main_auth:
+    #    - read:properties
+    #- api_key: [ ]
+  responses:
+    '200':
+      description: Successfully retrieved the list of properties.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../components/schemas/property/Property.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to access the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The requested properties were not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+post:
+  tags:
+    - Property
+  summary: Create new property
+  description: |
+    Creates a new property. The property information is provided in the request body.
+  operationId: createProperty
+  #security:
+   # - main_auth:
+    #    - write:properties
+    #- api_key: [ ]
+  requestBody:
+    description: Property information to be created including type, square footage, bedrooms, and rent amount.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/property/Property.yaml'
+  responses:
+    '200':
+      description: Successfully created the property. Returns the created property object.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/property/Property.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid property data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to create properties.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '405':
+      description: Method Not Allowed - The requested method is not supported for this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '409':
+      description: Conflict - A property with the same identifying information already exists.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+description: Property APIs
+x-content-type: application/json
+x-accepts:
+    - application/json
+x-tags:
+    - tag: Property

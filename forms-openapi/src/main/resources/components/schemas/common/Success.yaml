@@ -1,0 +1,5 @@
+description: Successfully deleted the resource and all associated data.
+content:
+  application/json:
+    schema:
+      $ref: 'Response.yaml'

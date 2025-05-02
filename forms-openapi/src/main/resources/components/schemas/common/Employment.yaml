@@ -1,0 +1,48 @@
+type: object
+x-form-data: true
+allOf:
+  - $ref: 'QuestionAnswerBase.yaml'
+  - properties:
+      employerName:
+        type: string
+        description: "Name of the employer"
+        example: "Acme Corporation"
+        x-form-field: true
+        x-field-label: "Employer Name"
+      jobTitle:
+        type: string
+        description: "Job title or position"
+        example: "Software Engineer"
+        x-form-field: true
+        x-field-label: "Job Title"
+      employmentType:
+        $ref: 'EmploymentType.yaml'
+      startDate:
+        type: string
+        format: date
+        description: "Employment start date"
+        x-form-field: true
+        x-field-label: "Start Date"
+      endDate:
+        type: string
+        format: date
+        description: "Employment end date (if applicable)"
+        x-form-field: true
+        x-field-label: "End Date"
+      grossIncome:
+        type: number
+        format: double
+        description: "Gross income in dollars"
+        example: 5000.00
+        x-form-field: true
+        x-field-label: "Gross Income ($)"
+      employerAddress:
+        $ref: 'Address.yaml'
+        x-form-embedded: true
+        x-field-label: Phone
+    required:
+      - employerName
+      - jobTitle
+      - employmentType
+      - startDate
+      - grossIncome

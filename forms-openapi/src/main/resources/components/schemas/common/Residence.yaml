@@ -1,0 +1,10 @@
+type: object
+x-form-data: true
+allOf:
+  - $ref: '../property/PropertyBase.yaml'
+  - properties:
+      questionAnswers:
+        type: array
+        items:
+          $ref: '../common/QuestionAnswer.yaml'
+        x-form-data: true

@@ -1,0 +1,25 @@
+x-form-data: true
+properties:
+  questionId:
+    description: "Question id"
+    type: string
+    example: "Can messages be left at this phone number?"
+    x-form-field: true
+    x-field-label: "Question"
+  answers:
+    type: array
+    format: string
+    x-form-field: true
+    x-field-label: "Answers"
+  answer:
+    type: string
+    x-form-field: true
+    x-field-label: "Answer"
+  explanation:
+    type: string
+    x-form-field: true
+    x-field-label: "Explanation"
+type: object
+required:
+  - questionId
+  - answers

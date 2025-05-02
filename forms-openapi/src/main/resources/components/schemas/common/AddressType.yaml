@@ -1,0 +1,11 @@
+type: string
+description: "Address type."
+enum:
+  - Home
+  - Work
+example: Home
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "Home"
+x-field-label: "Address Type"

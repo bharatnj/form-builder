@@ -1,0 +1,13 @@
+type: string
+description: "Type of residence"
+enum:
+  - Own
+  - Rent
+  - LiveWithRelative
+  - Other
+example: "Rent"
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "Rent"
+x-field-label: "Residence Type"

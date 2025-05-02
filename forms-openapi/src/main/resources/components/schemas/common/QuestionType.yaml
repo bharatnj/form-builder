@@ -1,0 +1,12 @@
+type: string
+description: "Question Type."
+enum:
+  - Single Choice
+  - Multiple Choice
+  - Open Ended
+  - Yes/No
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "Open Ended"
+x-field-label: "Question Type"

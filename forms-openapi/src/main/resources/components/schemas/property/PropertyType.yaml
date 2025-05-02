@@ -1,0 +1,16 @@
+type: string
+description: "The type of property"
+enum:
+  - Apartment
+  - House
+  - Condo
+  - Townhouse
+  - Duplex
+  - Mobile
+  - Other
+example: "House"
+x-form-field: true
+x-form-embedded: true
+x-form-select: true
+x-field-value: "House"
+x-field-label: "Property Type"

@@ -1,0 +1,135 @@
+get:
+  tags:
+    - Client
+  summary: Get all clients of a given property-owner
+  description: Retrieves a list of all clients associated with the specified property-owner. The response is paginated.
+  operationId: getClients
+  x-spring-paginated: true
+  parameters:
+    - in: path
+      name: tenantId
+      required: true
+      description: "The unique identifier of the property-owner whose clients are to be retrieved."
+      schema:
+        maxLength: 80
+        type: string
+      style: simple
+  security:
+    - main_auth:
+        - read:clients
+    - api_key: [ ]
+  responses:
+    '200':
+      description: Successfully retrieved the list of clients for the specified property-owner.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../components/schemas/client/Client.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to access the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified property-owner or clients were not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+post:
+  tags:
+    - Client
+  summary: Create new client
+  description: |
+    Creates a new client profile for the specified tenant. The client information is provided in the request body.
+  operationId: createClient
+  #security:
+   # - main_auth:
+    #    - write:clients
+    #- api_key: [ ]
+  parameters:
+    - in: path
+      name: tenantId
+      required: true
+      description: "The unique identifier of the property-owner for which the client is being created."
+      schema:
+        maxLength: 80
+        type: string
+      style: simple
+  requestBody:
+    description: Client information to be created including personal details, contact information, and other relevant data.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/client/Client.yaml'
+  responses:
+    '200':
+      description: Successfully created the client profile. Returns the created client object.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/client/Client.yaml'
+    '400':
+      description: Bad Request - The request was malformed or contained invalid client data.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '401':
+      description: Unauthorized - Authentication is required or the provided credentials are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '403':
+      description: Forbidden - The authenticated user does not have permission to create clients for this property-owner.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '404':
+      description: Not Found - The specified property-owner was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '409':
+      description: Conflict - A client with the same identifying information already exists.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+    '500':
+      description: Internal Server Error - An unexpected error occurred while processing the request.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/ProblemDetail.json'
+description: Client APIs
+x-content-type: application/json
+x-accepts:
+    - application/json
+x-tags:
+    - tag: Client

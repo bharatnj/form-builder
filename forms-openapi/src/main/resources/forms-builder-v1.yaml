@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: fbuilder APIs
+  description: |
+    This is the OpenAPI Specification for fbuilder APIs.
+    It provides a comprehensive suite of functionalities to interact with our platform.
+    It is designed to be easy to use and integrate with various application environments.
+  version: 1.0.0
+  termsOfService: 'https://api.fbuilder.com/v1/terms'
+  contact:
+    email: admin@fbuilder.com
+    url: 'https://api.fbuilder.com/v1/contact'
+  license:
+    name: fbuilder License
+    url: 'https://api.fbuilder.com/v1/license'
+servers:
+  - url: 'https://api.fbuilder.com'
+    description: Production Server
+  - url: 'http://localhost:8080/fbuilder'
+    description: Local Server
+components:
+  securitySchemes:
+    defaultApiKey:
+      description: API key provided in console
+      type: apiKey
+      name: api-key
+      in: header
+    basicHttpAuthentication:
+      description: Basic HTTP Authentication
+      type: http
+      scheme: Basic
+    bearerHttpAuthentication:
+      description: Bearer token using a JWT
+      type: http
+      scheme: Bearer
+      bearerFormat: JWT
+    oauth2Profiles:
+      $ref: 'components/securitySchemes/oauth2_profiles.yaml'
+
+
+security:
+  - basicHttpAuthentication: []
+paths:
+  # Property owner APIs start
+  /v1/property-owner:
+    $ref: 'paths/property-owner/property_owners.yaml'
+  /v1/property-owner/{id}:
+    $ref: 'paths/property-owner/property_owner_by_id.yaml'
+  /v1/property-owner/questions:
+    $ref: 'paths/property-owner/property_owner_questions.yaml'
+  /v1/property-owner/questions/{id}:
+    $ref: 'paths/property-owner/property_owner_question_by_id.yaml'
+
+
+  # Client APIs start
+  /v1/{tenantId}/clients:
+    $ref: 'paths/client/clients.yaml'
+  /v1/{tenantId}/clients/{id}:
+    $ref: 'paths/client/clients_by_id.yaml'
+
+  # Property APIs start
+  /v1/properties:
+    $ref: 'paths/property/properties.yaml'
+  /v1/properties/{id}:
+    $ref: 'paths/property/property_by_id.yaml'

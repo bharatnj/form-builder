@@ -1,0 +1,56 @@
+{{#models}}
+{{#model}}
+{{#vendorExtensions.x-form-data}}
+import {Component, Input} from '@angular/core';
+{{^vendorExtensions.x-form-select}}
+import * as Models from "../model/models";
+{{/vendorExtensions.x-form-select}}
+@Component({
+selector: 'app-review-{{#lambda.kebabcase}}{{{classname}}}{{/lambda.kebabcase}}',
+templateUrl: './{{#lambda.kebabcase}}{{{classname}}}{{/lambda.kebabcase}}.review.component.html',
+styleUrls: ['../scss/common.scss'],
+standalone: false,
+})
+export class {{{classname}}}ReviewComponent{
+{{^vendorExtensions.x-form-select}}
+    @Input()form!: Models.{{{classname}}}FormType;
+{{/vendorExtensions.x-form-select}}
+{{#vars}}
+{{#vendorExtensions.x-form-select}}
+    protected readonly {{{dataType}}}Options = Object.values(Models.{{{dataType}}});
+{{/vendorExtensions.x-form-select}}
+{{/vars}}
+{{#vars}}{{#lambda.compare}}{{{name}}}:questionAnswers:    @Input()questions: Models.Question[] = [];{{/lambda.compare}}{{/vars}}
+}
+{{/vendorExtensions.x-form-data}}
+{{^vendorExtensions.x-form-data}}
+{{#vendorExtensions.x-form-embedded}}
+import {Component} from '@angular/core';
+{{^vendorExtensions.x-form-select}}
+import { {{{classname}}}Form, {{{classname}}}FormType } from "../model/models";
+{{/vendorExtensions.x-form-select}}
+@Component({
+selector: 'app-review-{{#lambda.kebabcase}}{{{classname}}}{{/lambda.kebabcase}}',
+templateUrl: './{{#lambda.kebabcase}}{{{classname}}}{{/lambda.kebabcase}}.review.component.html',
+styleUrls: ['../scss/common.scss'],
+standalone: false,
+})
+export class {{{classname}}}ReviewComponent{
+{{^vendorExtensions.x-form-select}}
+    @Input()form!: Models.{{{classname}}}FormType;
+{{/vendorExtensions.x-form-select}}
+{{^isEnum}}
+{{#vars}}
+{{#vendorExtensions.x-form-select}}
+    protected readonly {{{dataType}}}Options = Object.values(Models.{{{dataType}}});
+{{/vendorExtensions.x-form-select}}
+{{/vars}}
+{{#vars}}
+    {{#lambda.compare}}{{{name}}}:questionAnswers:@Input()questions: Models.Question[] = [];{{/lambda.compare}}
+{{/vars}}
+{{/isEnum}}
+}
+{{/vendorExtensions.x-form-embedded}}
+{{/vendorExtensions.x-form-data}}
+{{/model}}
+{{/models}}

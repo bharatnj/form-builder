@@ -1,0 +1,123 @@
+{{#models}}
+{{#model}}
+{{#tsImports}}
+import * as {{classname}}Module from '{{filename}}';
+{{/tsImports}}
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {DocumentData, QueryDocumentSnapshot, SnapshotOptions, Timestamp} from "@angular/fire/firestore";
+{{/model}}
+{{/models}}
+
+export interface {{classname}}{{#allParents}}{{#-first}} extends {{/-first}}{{{.}}}{{^-last}}, {{/-last}}{{/allParents}} { {{>modelGenericAdditionalProperties}}
+{{#vars}}
+    {{#description}}
+        /**
+        * {{{description}}}
+        {{#deprecated}}
+            * @deprecated
+        {{/deprecated}}
+        */
+    {{/description}}
+    {{^description}}
+        {{#deprecated}}
+            /** @deprecated */
+        {{/deprecated}}
+    {{/description}}
+    {{^modelPropertyNamingOriginal}}
+        {{#isReadOnly}}readonly {{/isReadOnly}}{{{name}}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#isNullable}} | null{{/isNullable}};
+    {{/modelPropertyNamingOriginal}}
+    {{#modelPropertyNamingOriginal}}
+        {{#isReadOnly}}readonly {{/isReadOnly}}{{#hasSanitizedName}}'{{{baseName}}}'{{/hasSanitizedName}}{{^hasSanitizedName}}{{{name}}}{{/hasSanitizedName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#isNullable}} | null{{/isNullable}};
+    {{/modelPropertyNamingOriginal}}
+    {{#isEnum}}its enum{{/isEnum}}
+{{/vars}}
+}
+
+{{#vendorExtensions.x-form-data}}
+export type {{classname}}FormType = FormGroup<{ {{#vars}}{{#vendorExtensions.x-form-field}}
+    {{{name}}}: FormControl<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}|null{{/required}}>;
+{{/vendorExtensions.x-form-field}}{{^vendorExtensions.x-form-field}}{{#vendorExtensions.x-form-data}}{{^isArray}}
+    {{{name}}}: {{{dataType}}}Module.{{{dataType}}}FormType;{{/isArray}}
+    {{#isArray}}{{{name}}}: FormArray<{{#lambda.extract}}{{{dataType}}}:Array<([^>]+)>{{/lambda.extract}}Module.{{#lambda.extract}}{{{dataType}}}:Array<([^>]+)>{{/lambda.extract}}FormType>;
+    {{/isArray}}{{/vendorExtensions.x-form-data}}{{/vendorExtensions.x-form-field}}{{/vars}} }>
+
+export function get{{classname}}Form(): {{classname}}FormType {
+    return new FormGroup({ {{#vars}}{{#vendorExtensions.x-form-field}}
+    {{{name}}}: new FormControl<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}>({{#lambda.default-value}}{{{dataType}}}:{{{vendorExtensions.x-field-value}}}{{/lambda.default-value}}, {  nonNullable: {{#required}} true {{/required}} {{^required}} false {{/required}},
+    validators: [ {{#required}} Validators.required, {{/required}}{{#minLength}} Validators.minLength({{{minLength}}}),{{/minLength}}{{#maxLength}} Validators.maxLength({{{maxLength}}}),{{/maxLength}}{{#minimum}} Validators.min({{{minimum}}}),{{/minimum}}{{#maximum}} Validators.max({{{maximum}}}),{{/maximum}}{{#isEmail}} Validators.email,{{/isEmail}}{{#pattern}} Validators.pattern('{{{pattern}}}'),{{/pattern}}] } ),
+    {{/vendorExtensions.x-form-field}}{{^vendorExtensions.x-form-field}}{{#vendorExtensions.x-form-data}}{{^isArray}}
+    {{{name}}}: {{{dataType}}}Module.get{{{dataType}}}Form(),{{/isArray}}{{#isArray}}
+    {{{name}}}: new FormArray([{{#lambda.extract}}{{{dataType}}}:Array<([^>]+)>{{/lambda.extract}}Module.get{{#lambda.extract}}{{{dataType}}}:Array<([^>]+)>{{/lambda.extract}}Form()]),{{/isArray}}
+{{/vendorExtensions.x-form-data}}{{/vendorExtensions.x-form-field}}
+{{/vars}}
+    })
+}
+{{/vendorExtensions.x-form-data}}
+
+
+// Firestore data converter for {{classname}}
+export const {{classname}}FirestoreConverter = {
+toFirestore(modelObject: {{classname}}): DocumentData {
+const result: DocumentData = {};
+{{#vars}}
+    {{^vendorExtensions.x-field-is-primary-key}}
+        if (modelObject.{{{name}}} !== undefined) {
+        {{#complexType}}{{#isArray}}
+            {{#isEnum}}
+            result['{{{name}}}'] = modelObject.{{{name}}}.map(item => {
+            return item;
+            });
+            {{/isEnum}}
+            {{^isEnum}}{{#isEnumRef}}
+            result['{{{name}}}'] = modelObject.{{{name}}}.map(item => {
+            return item;
+            });
+            {{/isEnumRef}}{{^isEnumRef}}
+            if (Array.isArray(modelObject.{{{name}}})) {
+            result['{{{name}}}'] = modelObject.{{{name}}}.map(item => {
+            return {{{complexType}}}Module.{{{complexType}}}FirestoreConverter.toFirestore(item);
+            });
+            } else {
+            result['{{{name}}}'] = [];
+            } {{/isEnumRef}}{{/isEnum}}{{/isArray}}
+        {{^isArray}}result['{{{name}}}'] = modelObject.{{{name}}};{{/isArray}}
+        {{/complexType}}
+        {{^complexType}}
+            result['{{{name}}}'] = modelObject.{{{name}}};
+        {{/complexType}}
+        }
+    {{/vendorExtensions.x-field-is-primary-key}}
+{{/vars}}
+return result;
+},
+fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): {{classname}} {
+const data = snapshot.data(options);
+return {
+{{#vars}}
+    {{#vendorExtensions.x-field-is-primary-key}}id: snapshot.id,{{/vendorExtensions.x-field-is-primary-key}}
+    {{^vendorExtensions.x-field-is-primary-key}}
+        {{#complexType}}
+            {{#isArray}}{{{name}}}: data['{{{name}}}'] ? (data['{{{name}}}'] as Array<any>).map(item => {
+                return {{{complexType}}}Module.{{{complexType}}}FirestoreConverter.fromFirestore(item, options);
+                }) : [],{{/isArray}}
+            {{^isArray}}{{{name}}}: data['{{{name}}}'],{{/isArray}}
+        {{/complexType}}
+        {{^complexType}}
+            {{#isDate}}
+                {{{name}}}: data['{{{name}}}'] ? (data['{{{name}}}'] as Timestamp).toDate() : undefined,
+            {{/isDate}}
+            {{^isDate}}
+                {{#isDateTime}}
+                    {{{name}}}: data['{{{name}}}'] ? (data['{{{name}}}'] as Timestamp).toDate() : undefined,
+                {{/isDateTime}}
+                {{^isDateTime}}
+                    {{{name}}}: data['{{{name}}}'],
+                {{/isDateTime}}
+            {{/isDate}}
+        {{/complexType}}
+    {{/vendorExtensions.x-field-is-primary-key}}
+{{/vars}}
+    } as {{classname}};
+    }
+
+};

@@ -1,0 +1,14 @@
+allOf:
+  - $ref: '../common/BaseModel.yaml'
+  - properties:
+      clientId:
+        description: "The client id this object is associated with"
+        type: string
+        readOnly: true
+      questionAnswers:
+        type: array
+        items:
+          $ref: '../common/QuestionAnswer.yaml'
+        x-form-data: true
+    required:
+      - clientId

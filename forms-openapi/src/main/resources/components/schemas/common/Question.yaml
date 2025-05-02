@@ -1,0 +1,79 @@
+x-class-extra-annotation: "@com.google.cloud.spring.data.firestore.Document(collectionName=\"questions\")"
+x-form-data: true
+allOf:
+  - $ref: 'ReferenceData.yaml'
+  - properties:
+      type:
+        $ref: 'QuestionType.yaml'
+      questionId:
+        type: string
+        description: "Question id"
+      text:
+        description: "Question Text."
+        type: string
+        example: "Can messages be left at this phone number?"
+        x-form-field: true
+        x-field-label: "Question"
+      groups:
+        description: "one or more question group like Client/Parent/Guardian"
+        type: array
+        items:
+          $ref: 'QuestionGroup.yaml'
+        x-form-field: true
+        x-field-label: "Group"
+      options:
+        description: The options of the question for user to choose
+        type: array
+        items:
+          $ref: 'QuestionOption.yaml'
+        x-form-field: true
+        x-field-label: "Possible Answers"
+      possibleAnswers:
+        type: array
+        items:
+          type: string
+        x-form-field: true
+        x-field-label: "Possible Answers"
+      dataType:
+        $ref: 'QADataType.yaml'
+      validations:
+        type: array
+        x-form-field: true
+        x-field-label: "Validations"
+        items:
+          $ref: 'ValidationType.yaml'
+      additionalUserInputRequired:
+        type: boolean
+        x-form-field: true
+        x-field-label: "Additional user input required?"
+      additionalUserInputFieldLabel:
+        type: string
+        x-form-field: true
+        x-field-label: "Additional user input field label"
+      helpText:
+        type: string
+        x-form-field: true
+        x-field-label: "Help text about the question"
+      order:
+        type: integer
+        minimum: 1
+      dependsOn:
+        type: array
+        items:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: 'QuestionDependency.yaml'
+          properties:
+            operation:
+              $ref: 'OperationType.yaml'
+        x-form-field: true
+        x-field-label: "Depends On"
+    type: object
+    required:
+      - type
+      - text
+      - questionId
+      - dataType
+      - groups
