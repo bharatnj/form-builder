@@ -1,0 +1,73 @@
+[
+  {
+    "id": "q1",
+    "tenantId": "1",
+    "languageId": "en_US",
+    "type": "Open Ended",
+    "questionId": "name",
+    "text": "What is your full name?",
+    "groups": ["Client"],
+    "dataType": "String",
+    "order": 1,
+    "createdAt": "2025-05-01T00:00:00.000Z",
+    "updatedAt": "2025-05-01T00:00:00.000Z"
+  },
+  {
+    "id": "q2",
+    "tenantId": "1",
+    "languageId": "en_US",
+    "type": "Multiple Choice",
+    "questionId": "gender",
+    "text": "What is your gender?",
+    "groups": ["Client"],
+    "options": [
+      { "optionId": "g1", "text": "Male" },
+      { "optionId": "g2", "text": "Female" },
+      { "optionId": "g3", "text": "Non-binary" },
+      { "optionId": "g4", "text": "Prefer not to say" }
+    ],
+    "dataType": "String",
+    "order": 2,
+    "createdAt": "2025-05-01T00:00:00.000Z",
+    "updatedAt": "2025-05-01T00:00:00.000Z"
+  },
+  {
+    "id": "q3",
+    "tenantId": "1",
+    "languageId": "en_US",
+    "type": "Yes/No",
+    "questionId": "has_insurance",
+    "text": "Do you currently have insurance?",
+    "groups": ["Client"],
+    "dataType": "String",
+    "order": 3,
+    "createdAt": "2025-05-01T00:00:00.000Z",
+    "updatedAt": "2025-05-01T00:00:00.000Z"
+  },
+  {
+    "id": "q4",
+    "tenantId": "tenant1",
+    "languageId": "en_US",
+    "type": "Open Ended",
+    "questionId": "address",
+    "text": "What is your current address?",
+    "groups": ["Client"],
+    "dataType": "String",
+    "order": 4,
+    "createdAt": "2025-05-01T00:00:00.000Z",
+    "updatedAt": "2025-05-01T00:00:00.000Z"
+  },
+  {
+    "id": "q5",
+    "tenantId": "tenant1",
+    "languageId": "en_US",
+    "type": "Open Ended",
+    "questionId": "age",
+    "text": "What is your age?",
+    "groups": ["Client"],
+    "dataType": "Numeric",
+    "order": 5,
+    "createdAt": "2025-05-01T00:00:00.000Z",
+    "updatedAt": "2025-05-01T00:00:00.000Z"
+  }
+]
