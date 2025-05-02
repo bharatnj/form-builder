@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.forms.builder</groupId>
+    <artifactId>forms-builder-parent</artifactId>
+    <version>1.0.0</version>
+    <name>forms-builder-parent</name>
+    <description>forms-builder-parent</description>
+    <modules>
+        <module>forms-openapi</module>
+        <module>forms-openapi-generator</module>
+    </modules>
+    <packaging>pom</packaging>
+    <url/>
+    <licenses>
+        <license/>
+    </licenses>
+    <developers>
+        <developer/>
+    </developers>
+    <scm>
+        <connection/>
+        <developerConnection/>
+        <tag/>
+        <url/>
+    </scm>
+    <properties>
+        <java.version>23</java.version>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springdoc-openapi-version>2.6.0</springdoc-openapi-version>
+        <generatedSourcesDirectory>src/main/generated</generatedSourcesDirectory>
+        <openapi.generator.version>7.8.0</openapi.generator.version>
+        <spring-cloud-gcp-firestore-version>6.1.1</spring-cloud-gcp-firestore-version>
+        <spring-cloud-gcp-dependencies-version>6.1.1</spring-cloud-gcp-dependencies-version>
+    </properties>
+
+</project>
