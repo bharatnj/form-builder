@@ -1,0 +1,8 @@
+<div class="step-container">
+  <h2>Property Information</h2>
+  <p>Please provide information about the property you're applying to rent.</p>
+
+  <app-form-property [form]="form" [questions]="questions"></app-form-property>
+  <app-form-address [form]="form.controls.address"></app-form-address>
+  <app-question [questions]="questions" [form]="form.controls.questionAnswers"></app-question>
+</div>

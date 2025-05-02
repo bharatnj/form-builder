@@ -1,0 +1,44 @@
+<div class="step-container">
+  <h2>Review & Submit</h2>
+  <p>Please review all the information you've provided before submitting your application.</p>
+
+  <div class="review-section">
+    <h3>Property Information</h3>
+    <app-review-property [form]="propertyForm"></app-review-property>
+  </div>
+
+  <div class="review-section">
+    <h3>Tenancy Information</h3>
+    <mat-card>
+      <mat-card-content>
+        <p><strong>Lease Start Date:</strong> {{formattedLeaseStartDate}}</p>
+        <p><strong>Lease Term:</strong> {{tenancyForm.value.leaseTerm}} months</p>
+        <p><strong>Monthly Rent:</strong> ${{tenancyForm.value.monthlyRent}}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="review-section">
+    <h3>Applicant Details</h3>
+    <app-review-client [form]="applicantForm"></app-review-client>
+  </div>
+
+  <div class="review-section">
+    <h3>Employment Information</h3>
+    <app-review-employment [form]="employmentForm"></app-review-employment>
+  </div>
+
+  <div class="review-section">
+    <h3>Current Residence</h3>
+    <app-review-residence [form]="residenceForm"></app-review-residence>
+  </div>
+
+  <div class="review-section">
+    <h3>Current Property Owner</h3>
+    <app-review-property-owner [form]="propertyOwnerForm"></app-review-property-owner>
+  </div>
+
+  <div class="confirmation">
+    <p>By submitting this application, you confirm that all the information provided is accurate and complete.</p>
+  </div>
+</div>

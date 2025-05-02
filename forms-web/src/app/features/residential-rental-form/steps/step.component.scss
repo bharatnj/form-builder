@@ -1,0 +1,48 @@
+// Common styles for all step components
+.step-container {
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 10px;
+    color: #3f51b5;
+    font-size: 1.5rem;
+  }
+
+  p {
+    margin-bottom: 20px;
+    color: #666;
+  }
+}
+
+.step-form {
+  display: flex;
+  flex-direction: column;
+
+  .step-form-field {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+}
+
+// Specific styles for review sections
+.review-section {
+  margin-bottom: 20px;
+
+  h3 {
+    color: #3f51b5;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+}
+
+// Confirmation section in review step
+.confirmation {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+
+  p {
+    font-weight: 500;
+  }
+}

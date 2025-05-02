@@ -1,0 +1,7 @@
+<div class="step-container">
+  <h2>Applicant Details</h2>
+  <p>Please provide your personal information.</p>
+
+  <app-form-client [form]="form" [questions]="questions"></app-form-client>
+  <app-question [questions]="questions" [form]="form.controls.questionAnswers"></app-question>
+</div>

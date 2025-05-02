@@ -1,0 +1,76 @@
+<div class="residential-rental-form-container">
+  <h1>Residential Rental Application</h1>
+
+  <form [formGroup]="rentalForm" (ngSubmit)="onSubmit()">
+    <mat-stepper #stepper orientation="vertical">
+      <!-- Property Step -->
+      <mat-step [stepControl]="propertyForm" label="Property">
+        <app-property-step [form]="propertyForm" [questions]="getQuestionsByGroup('Property')"></app-property-step>
+        <div class="step-navigation">
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </mat-step>
+
+      <!-- Tenancy Step -->
+      <mat-step [stepControl]="tenancyForm" label="Tenancy">
+        <app-tenancy-step [form]="tenancyForm"></app-tenancy-step>
+        <div class="step-navigation">
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </mat-step>
+
+      <!-- Applicant Details Step -->
+      <mat-step [stepControl]="applicantForm" label="Applicant Details">
+        <app-applicant-details-step [form]="applicantForm" [questions]="getQuestionsByGroup('Client')"></app-applicant-details-step>
+        <div class="step-navigation">
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </mat-step>
+
+      <!-- Employment Step -->
+      <mat-step [stepControl]="employmentForm" label="Employment">
+        <app-employment-step [form]="employmentForm" [questions]="getQuestionsByGroup('Employment')"></app-employment-step>
+        <div class="step-navigation">
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </mat-step>
+
+      <!-- Current Residence Step -->
+      <mat-step [stepControl]="residenceForm" label="Current Residence">
+        <app-current-residence-step [form]="residenceForm" [questions]="getQuestionsByGroup('Residence')"></app-current-residence-step>
+        <div class="step-navigation">
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </mat-step>
+
+      <!-- Current Property Owner Step -->
+      <mat-step [stepControl]="propertyOwnerForm" label="Current Property Owner">
+        <app-current-property-owner-step [form]="propertyOwnerForm" [questions]="getQuestionsByGroup('PropertyOwner')"></app-current-property-owner-step>
+        <div class="step-navigation">
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </mat-step>
+
+      <!-- Review & Submit Step -->
+      <mat-step label="Review & Submit">
+        <app-review-submit-step
+          [propertyForm]="propertyForm"
+          [tenancyForm]="tenancyForm"
+          [applicantForm]="applicantForm"
+          [employmentForm]="employmentForm"
+          [residenceForm]="residenceForm"
+          [propertyOwnerForm]="propertyOwnerForm">
+        </app-review-submit-step>
+        <div class="step-navigation">
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!rentalForm.valid">Submit</button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </form>
+</div>
