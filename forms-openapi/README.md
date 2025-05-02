@@ -75,6 +75,8 @@ The specifications in this module are used by the `forms-openapi-generator` modu
 - TypeScript models and Angular components for the frontend
 - Java models and Spring controllers for the backend
 
+To generate code using Maven, run: `mvn clean generate-sources -pl forms-openapi -am -P custom-frontend`
+
 ## Best Practices
 
 When modifying the OpenAPI specifications:

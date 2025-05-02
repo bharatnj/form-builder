@@ -107,8 +107,8 @@
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "repo": "https://github.com/bharatnj/form-builder.git",
-            "name": "YOUR_GITHUB_USERNAME",
-            "email": "YOUR_GITHUB_EMAIL",
+            "name": "Bharat",
+            "email": "bharatnj@outlook.com",
             "silent": false
           }
         }
