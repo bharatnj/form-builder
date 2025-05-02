@@ -13,7 +13,7 @@ The project uses a custom OpenAPI generator to produce:
 
 ## Demo
 
-A demo of the Form Builder project is available at [Form Builder](https://bharatnj.github.io/fb/).
+A demo of the Form Builder project is available at [Form Builder](https://bharatnj.github.io/form-builder/).
 
 This approach ensures consistency between frontend and backend validation, reduces manual coding effort, and maintains a single source of truth in the OpenAPI specification.
 
